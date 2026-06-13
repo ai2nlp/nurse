@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NurseShift — Sunday Rotation Manager</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════
+       SIDEBAR
+  ════════════════════════════════════════════ -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <span class="logo-icon">⚕</span>
+      <span class="logo-text">NurseShift</span>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a href="#" class="nav-link" data-view="dashboard">
+        <span class="nav-icon">◈</span>
+        <span class="nav-label">Dashboard</span>
+      </a>
+      <a href="#" class="nav-link" data-view="calendar">
+        <span class="nav-icon">◷</span>
+        <span class="nav-label">Calendar</span>
+      </a>
+      <a href="#" class="nav-link" data-view="team">
+        <span class="nav-icon">◉</span>
+        <span class="nav-label">Team</span>
+      </a>
+      <a href="#" class="nav-link" data-view="settings">
+        <span class="nav-icon">◎</span>
+        <span class="nav-label">Settings</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="track-toggle-container">
+        <span class="track-toggle-title">Rotation Mode</span>
+        <div class="track-toggle-row">
+          <label class="toggle-switch">
+            <input type="checkbox" id="trackToggle" />
+            <span class="toggle-slider"></span>
+          </label>
+          <span class="track-label" id="trackLabel">Concurrent</span>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Mobile sidebar toggle -->
+  <button class="sidebar-toggle-btn" id="sidebarToggle" aria-label="Toggle sidebar">
+    <span></span><span></span><span></span>
+  </button>
+
+  <!-- ═══════════════════════════════════════════
+       MAIN CONTENT
+  ════════════════════════════════════════════ -->
+  <main class="main-content">
+
+    <!-- ─── DASHBOARD VIEW ─────────────────────── -->
+    <section class="view" id="view-dashboard">
+      <div class="view-header">
+        <h1>Dashboard</h1>
+        <div class="view-actions">
+          <button class="btn btn-outline" onclick="exportCSV()">
+            <span class="btn-icon-left">↓</span> Export CSV
+          </button>
+          <button class="btn btn-primary" onclick="exportPDF()">
+            <span class="btn-icon-left">⎙</span> Export PDF
+          </button>
+        </div>
+      </div>
+
+      <!-- This Sunday -->
+      <div class="section-header">
+        <h2 class="section-title">This Sunday</h2>
+      </div>
+      <div class="this-sunday-grid" id="thisSundayGrid">
+        <!-- Populated by dashboard.js -->
+      </div>
+
+      <!-- Upcoming Timeline -->
+      <div class="section-header">
+        <h2 class="section-title">Upcoming Sundays</h2>
+      </div>
+      <div class="glass-panel upcoming-timeline" id="upcomingTimeline">
+        <!-- Populated by dashboard.js -->
+      </div>
+
+      <!-- Rest Tracker -->
+      <div class="section-header">
+        <h2 class="section-title">Rest Tracker</h2>
+        <span class="section-subtitle">Days since / until next shift</span>
+      </div>
+      <div class="rest-tracker-grid" id="restTrackerGrid">
+        <!-- Populated by dashboard.js -->
+      </div>
+    </section>
+
+    <!-- ─── CALENDAR VIEW ──────────────────────── -->
+    <section class="view" id="view-calendar">
+      <div class="view-header">
+        <h1>Calendar</h1>
+        <div class="calendar-nav">
+          <button class="btn btn-icon" id="prevMonth" title="Previous month">&#8249;</button>
+          <span class="month-label" id="currentMonthLabel">Month Year</span>
+          <button class="btn btn-icon" id="nextMonth" title="Next month">&#8250;</button>
+        </div>
+      </div>
+
+      <div class="glass-panel calendar-wrapper">
+        <div class="calendar-grid" id="calendarGrid">
+          <!-- Populated by calendar.js -->
+        </div>
+      </div>
+
+      <div class="calendar-legend">
+        <span class="legend-item"><span class="legend-dot dot-a"></span> Group A</span>
+        <span class="legend-item"><span class="legend-dot dot-b"></span> Group B</span>
+        <span class="legend-item"><span class="legend-dot dot-today"></span> Today</span>
+        <span class="legend-item"><span class="legend-dot dot-sunday"></span> Sunday</span>
+      </div>
+    </section>
+
+    <!-- ─── TEAM VIEW ──────────────────────────── -->
+    <section class="view" id="view-team">
+      <div class="view-header">
+        <h1>Team</h1>
+        <button class="btn btn-primary" id="addMemberBtn">
+          <span class="btn-icon-left">+</span> Add Member
+        </button>
+      </div>
+
+      <div class="team-grid">
+        <!-- Group A Panel -->
+        <div class="group-panel glass-panel group-panel-a">
+          <div class="group-panel-header">
+            <div class="group-panel-title">
+              <span class="group-dot dot-a"></span>
+              <h2>Group A</h2>
+            </div>
+            <span class="group-count" id="groupACount">0 members</span>
+          </div>
+          <ul class="member-list" id="groupAList" data-group="A">
+            <!-- Populated by team.js -->
+          </ul>
+        </div>
+
+        <!-- Group B Panel -->
+        <div class="group-panel glass-panel group-panel-b">
+          <div class="group-panel-header">
+            <div class="group-panel-title">
+              <span class="group-dot dot-b"></span>
+              <h2>Group B</h2>
+            </div>
+            <span class="group-count" id="groupBCount">0 members</span>
+          </div>
+          <ul class="member-list" id="groupBList" data-group="B">
+            <!-- Populated by team.js -->
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── SETTINGS VIEW ─────────────────────── -->
+    <section class="view" id="view-settings">
+      <div class="view-header">
+        <h1>Settings</h1>
+      </div>
+
+      <div class="settings-grid">
+
+        <!-- Rotation Track -->
+        <div class="settings-card glass-panel">
+          <div class="settings-card-header">
+            <h2>Rotation Track</h2>
+            <p>Choose how Group A and Group B assignments work each Sunday.</p>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="rotationTrackSelect">Mode</label>
+            <select class="select-input" id="rotationTrackSelect">
+              <option value="concurrent">Concurrent — Both groups work every Sunday</option>
+              <option value="alternating">Alternating — Groups alternate each Sunday</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Rotation Start Dates -->
+        <div class="settings-card glass-panel">
+          <div class="settings-card-header">
+            <h2>Rotation Start Dates</h2>
+            <p>Set the first Sunday each group's rotation cycle begins from.</p>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="groupAStartDate">Group A Start</label>
+            <input type="date" class="date-input" id="groupAStartDate" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="groupBStartDate">Group B Start</label>
+            <input type="date" class="date-input" id="groupBStartDate" />
+          </div>
+        </div>
+
+        <!-- Danger Zone -->
+        <div class="settings-card glass-panel settings-card-danger">
+          <div class="settings-card-header">
+            <h2>Danger Zone</h2>
+            <p>Permanently reset all members, overrides, and settings to defaults.</p>
+          </div>
+          <button class="btn btn-danger" onclick="clearAllData()">
+            Reset All Data
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ═══════════════════════════════════════════
+       SHIFT DETAIL MODAL
+  ════════════════════════════════════════════ -->
+  <div class="modal-overlay" id="shiftModal">
+    <div class="modal glass-panel">
+      <div class="modal-header">
+        <h2 class="modal-title" id="modalTitle">Shift Details</h2>
+        <button class="btn btn-icon modal-close" id="modalClose" aria-label="Close">✕</button>
+      </div>
+      <div class="modal-body" id="modalBody">
+        <!-- Populated by calendar.js -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       MEMBER ADD / EDIT MODAL
+  ════════════════════════════════════════════ -->
+  <div class="modal-overlay" id="memberModal">
+    <div class="modal glass-panel">
+      <div class="modal-header">
+        <h2 class="modal-title" id="memberModalTitle">Add Member</h2>
+        <button class="btn btn-icon modal-close" id="memberModalClose" aria-label="Close">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label" for="memberNameInput">Full Name</label>
+          <input
+            type="text"
+            class="text-input"
+            id="memberNameInput"
+            placeholder="e.g. Jane Smith"
+            autocomplete="off"
+          />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Group</label>
+          <div class="group-btn-row">
+            <button class="btn group-btn active" data-group="A">Group A</button>
+            <button class="btn group-btn" data-group="B">Group B</button>
+          </div>
+        </div>
+        <div class="modal-actions">
+          <button class="btn btn-outline" id="memberModalCancel">Cancel</button>
+          <button class="btn btn-primary" id="memberModalSave">Save Member</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       SCRIPTS (order matters)
+  ════════════════════════════════════════════ -->
+  <script src="js/state.js"></script>
+  <script src="js/rotation.js"></script>
+  <script src="js/dashboard.js"></script>
+  <script src="js/calendar.js"></script>
+  <script src="js/team.js"></script>
+  <script src="js/export.js"></script>
+  <script src="js/app.js"></script>
+
+</body>
+</html>
