@@ -195,5 +195,23 @@ function init() {
   navigate('dashboard');
 }
 
+// ─── Autosave Toast ───────────────────────────────────────────────
+let _toastTimer = null;
+
+function showSaveToast() {
+  const toast = document.getElementById('autosaveToast');
+  if (!toast) return;
+  toast.classList.add('visible');
+  clearTimeout(_toastTimer);
+  _toastTimer = setTimeout(() => toast.classList.remove('visible'), 2000);
+
+  // Update last-saved label in sidebar
+  const label = document.getElementById('lastSavedLabel');
+  if (label) {
+    const now = new Date();
+    label.textContent = 'Saved ' + now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  }
+}
+
 // ─── Bootstrap ────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', init);
