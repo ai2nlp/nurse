@@ -1678,4 +1678,42 @@ textarea {
   color: var(--text-muted);
   opacity: 0.5;
 }
+
+/* ─── About Card ─────────────────────────────────────────────── */
+.about-text {
+  font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin-bottom: 12px;
+}
+
+.about-inspiration {
+  font-size: 14px;
+  color: var(--text);
+  line-height: 1.6;
+  padding: 12px 16px;
+  background: var(--group-a-light);
+  border-left: 3px solid var(--group-a);
+  border-radius: var(--radius-sm);
+  margin-bottom: 16px;
+}
+
+.about-inspiration strong {
+  color: #a5b4fc;
+}
+
+.about-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.about-version {
+  font-size: 12px;
+  color: var(--text-muted);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 3px 10px;
+}
 }
