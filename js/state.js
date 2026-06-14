@@ -57,7 +57,6 @@ function saveState() {
   try {
     localStorage.setItem('nurseshift_state', JSON.stringify(_state));
     localStorage.setItem('nurseshift_saved_at', new Date().toISOString());
-    if (typeof showSaveToast === 'function') showSaveToast();
   } catch (e) {
     console.warn('NurseShift: Failed to save state to localStorage.', e);
   }

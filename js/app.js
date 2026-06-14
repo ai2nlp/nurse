@@ -61,8 +61,12 @@ function updateTrackToggle() {
   const s      = getState();
   const toggle = document.getElementById('trackToggle');
   const label  = document.getElementById('trackLabel');
+  const desc   = document.getElementById('trackDesc');
   if (toggle) toggle.checked = s.rotationTrack === 'alternating';
   if (label)  label.textContent = s.rotationTrack === 'concurrent' ? 'Concurrent' : 'Alternating';
+  if (desc)   desc.textContent  = s.rotationTrack === 'concurrent'
+    ? 'Both groups work every Sunday'
+    : 'Groups alternate each Sunday';
 }
 
 // ─── Initialise App ───────────────────────────────────────────────
@@ -161,13 +165,11 @@ function init() {
     setState({ rotationStartB: e.target.value });
   });
 
-  // ── Sidebar track toggle (pill switch)
+  // ── Settings track toggle (pill switch)
   document.getElementById('trackToggle')?.addEventListener('change', e => {
     const track = e.target.checked ? 'alternating' : 'concurrent';
     setState({ rotationTrack: track });
-    document.getElementById('trackLabel').textContent =
-      track === 'concurrent' ? 'Concurrent' : 'Alternating';
-    // Keep the settings select in sync if it's visible
+    updateTrackToggle();
     const trackSelect = document.getElementById('rotationTrackSelect');
     if (trackSelect) trackSelect.value = track;
   });
@@ -193,24 +195,6 @@ function init() {
   // ── Sync toggle UI to persisted state and navigate to dashboard
   updateTrackToggle();
   navigate('dashboard');
-}
-
-// ─── Autosave Toast ───────────────────────────────────────────────
-let _toastTimer = null;
-
-function showSaveToast() {
-  const toast = document.getElementById('autosaveToast');
-  if (!toast) return;
-  toast.classList.add('visible');
-  clearTimeout(_toastTimer);
-  _toastTimer = setTimeout(() => toast.classList.remove('visible'), 2000);
-
-  // Update last-saved label in sidebar
-  const label = document.getElementById('lastSavedLabel');
-  if (label) {
-    const now = new Date();
-    label.textContent = 'Saved ' + now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-  }
 }
 
 // ─── Bootstrap ────────────────────────────────────────────────────

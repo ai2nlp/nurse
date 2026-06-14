@@ -40,20 +40,7 @@
     </nav>
 
     <div class="sidebar-footer">
-      <div class="track-toggle-container">
-        <span class="track-toggle-title">Rotation Mode</span>
-        <div class="track-toggle-row">
-          <label class="toggle-switch">
-            <input type="checkbox" id="trackToggle" />
-            <span class="toggle-slider"></span>
-          </label>
-          <span class="track-label" id="trackLabel">Concurrent</span>
-        </div>
-      </div>
-      <div class="last-saved-row">
-        <span class="last-saved-icon">💾</span>
-        <span class="last-saved-label" id="lastSavedLabel">Autosave on</span>
-      </div>
+      <span class="sidebar-version">NurseShift v1.0</span>
     </div>
   </aside>
 
@@ -211,6 +198,36 @@
           </div>
         </div>
 
+        <!-- Rotation Mode Toggle -->
+        <div class="settings-card glass-panel">
+          <div class="settings-card-header">
+            <h2>Rotation Mode</h2>
+            <p>Switch between concurrent and alternating Sunday scheduling.</p>
+          </div>
+          <div class="form-group toggle-setting-row">
+            <div class="toggle-setting-info">
+              <span class="toggle-setting-label" id="trackLabel">Concurrent</span>
+              <span class="toggle-setting-desc" id="trackDesc">Both groups work every Sunday</span>
+            </div>
+            <label class="toggle-switch">
+              <input type="checkbox" id="trackToggle" />
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Autosave -->
+        <div class="settings-card glass-panel">
+          <div class="settings-card-header">
+            <h2>Autosave</h2>
+            <p>All changes are saved automatically to this browser. Data persists across visits.</p>
+          </div>
+          <div class="autosave-status">
+            <span class="autosave-status-dot"></span>
+            <span>Autosave is <strong>on</strong></span>
+          </div>
+        </div>
+
         <!-- Danger Zone -->
         <div class="settings-card glass-panel settings-card-danger">
           <div class="settings-card-header">
@@ -275,12 +292,6 @@
         </div>
       </div>
     </div>
-  </div>
-
-  <!-- Autosave toast -->
-  <div class="autosave-toast" id="autosaveToast">
-    <span class="autosave-icon">✓</span>
-    <span class="autosave-text">Changes saved</span>
   </div>
 
   <!-- ═══════════════════════════════════════════
