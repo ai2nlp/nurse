@@ -197,5 +197,5 @@ function init() {
   navigate('dashboard');
 }
 
-// ─── Bootstrap ────────────────────────────────────────────────────
-document.addEventListener('DOMContentLoaded', init);
+// ─── Bootstrap (called by auth.js after login) ───────────────────
+// init() is invoked by auth.js once the user is authenticated.

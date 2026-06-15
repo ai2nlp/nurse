@@ -1702,6 +1702,81 @@ textarea {
   color: #a5b4fc;
 }
 
+/* ─── Auth Overlay ───────────────────────────────────────────── */
+.auth-overlay {
+  background: rgba(10, 10, 14, 0.95);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  z-index: 2000;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 400px;
+  padding: 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.auth-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.auth-title {
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.auth-error {
+  font-size: 13px;
+  color: var(--danger);
+  min-height: 18px;
+  margin: 0;
+}
+
+.auth-submit-btn {
+  width: 100%;
+  justify-content: center;
+}
+
+.auth-switch {
+  font-size: 13px;
+  color: var(--text-muted);
+  text-align: center;
+  margin: 0;
+}
+
+.auth-switch a {
+  color: var(--accent);
+  text-decoration: underline;
+}
+
+/* ─── Sidebar User ───────────────────────────────────────────── */
+.sidebar-user {
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 0;
+  border-top: 1px solid var(--border);
+  margin-bottom: 8px;
+}
+
+.sidebar-user-email {
+  font-size: 12px;
+  color: var(--text-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.btn-sm {
+  padding: 5px 12px;
+  font-size: 12px;
+}
+
 .about-meta {
   display: flex;
   align-items: center;

@@ -40,6 +40,10 @@
     </nav>
 
     <div class="sidebar-footer">
+      <div class="sidebar-user" id="sidebarUser" style="display:none">
+        <span class="sidebar-user-email" id="sidebarUserEmail"></span>
+        <button class="btn btn-outline btn-sm" onclick="handleLogout()">Sign Out</button>
+      </div>
       <span class="sidebar-version">NurseShift v1.0</span>
     </div>
   </aside>
@@ -293,14 +297,45 @@
   </div>
 
   <!-- ═══════════════════════════════════════════
+       AUTH MODAL
+  ════════════════════════════════════════════ -->
+  <div class="modal-overlay auth-overlay active" id="authModal">
+    <div class="modal glass-panel auth-card">
+      <div class="auth-brand">
+        <span class="logo-icon">⚕</span>
+        <span class="logo-text">NurseShift</span>
+      </div>
+      <h2 class="auth-title" id="authModalTitle">Sign In</h2>
+      <form id="authForm" autocomplete="off" novalidate>
+        <div class="form-group">
+          <label class="form-label" for="authEmail">Email</label>
+          <input type="email" class="text-input" id="authEmail" placeholder="your@email.com" autocomplete="email" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="authPassword">Password</label>
+          <input type="password" class="text-input" id="authPassword" placeholder="••••••••" autocomplete="current-password" />
+        </div>
+        <p class="auth-error" id="authError"></p>
+        <button type="submit" class="btn btn-primary auth-submit-btn" id="authSubmitBtn">Sign In</button>
+      </form>
+      <p class="auth-switch" id="authSwitchText">
+        No account? <a href="#" onclick="toggleAuthMode();return false;">Sign Up</a>
+      </p>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
        SCRIPTS (order matters)
   ════════════════════════════════════════════ -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="js/config.js"></script>
   <script src="js/state.js"></script>
   <script src="js/rotation.js"></script>
   <script src="js/dashboard.js"></script>
   <script src="js/calendar.js"></script>
   <script src="js/team.js"></script>
   <script src="js/export.js"></script>
+  <script src="js/auth.js"></script>
   <script src="js/app.js"></script>
 
 </body>
