@@ -128,7 +128,7 @@ async function loadTeamState() {
   const { data: { user } } = await client.auth.getUser();
   if (!user) return;
 
-  _setSyncStatus('Loading…');
+  _setSyncStatus('Syncing…');
 
   const { data, error } = await client
     .from('team_state')
@@ -138,7 +138,7 @@ async function loadTeamState() {
 
   if (error) {
     if (error.code === 'PGRST116') {
-      // No cloud record yet. If the user has saved locally, push it up to bootstrap the cloud.
+      // No cloud record — push local state if the user has ever made changes.
       if (localStorage.getItem('nurseshift_saved_at')) {
         await saveTeamState();
         _setSyncStatus('Synced ✓');
@@ -151,17 +151,26 @@ async function loadTeamState() {
     return;
   }
 
-  // Use setStateFromCloud so we don't overwrite nurseshift_saved_at and don't
-  // trigger the auto-save timer — avoids a ping-pong loop on every login.
-  setStateFromCloud({
-    members:        data.members,
-    rotationTrack:  data.rotation_track,
-    rotationStartA: data.rotation_start_a,
-    rotationStartB: data.rotation_start_b,
-    overrides:      data.overrides || {},
-  });
-  renderAll();
-  _setSyncStatus('Loaded ✓');
+  const cloudTime = new Date(data.updated_at).getTime();
+  const localTime = new Date(localStorage.getItem('nurseshift_saved_at') || 0).getTime();
+
+  if (localTime > cloudTime) {
+    // Local is newer (e.g. changes made before auto-save existed) — push it up.
+    await saveTeamState();
+    _setSyncStatus('Synced ✓');
+  } else {
+    // Cloud is newer or equal — load it without touching nurseshift_saved_at
+    // so the next login comparison stays correct (no ping-pong loop).
+    setStateFromCloud({
+      members:        data.members,
+      rotationTrack:  data.rotation_track,
+      rotationStartA: data.rotation_start_a,
+      rotationStartB: data.rotation_start_b,
+      overrides:      data.overrides || {},
+    });
+    renderAll();
+    _setSyncStatus('Loaded ✓');
+  }
 }
 
 function _setSyncStatus(msg, isError = false) {
