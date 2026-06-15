@@ -98,4 +98,66 @@ async function handleLogout() {
   location.reload();
 }
 
+// ─── Cloud Save / Load ────────────────────────────────────────────
+
+async function saveTeamState() {
+  const client = getSupabaseClient();
+  const { data: { user } } = await client.auth.getUser();
+  if (!user) return;
+
+  const s = getState();
+  _setSyncStatus('Saving…');
+
+  const { error } = await client.from('team_state').upsert({
+    user_id:          user.id,
+    members:          s.members,
+    rotation_track:   s.rotationTrack,
+    rotation_start_a: s.rotationStartA,
+    rotation_start_b: s.rotationStartB,
+    overrides:        s.overrides,
+    updated_at:       new Date().toISOString(),
+  }, { onConflict: 'user_id' });
+
+  _setSyncStatus(error ? 'Save failed' : 'Saved ✓', !!error);
+}
+
+async function loadTeamState() {
+  const client = getSupabaseClient();
+  const { data: { user } } = await client.auth.getUser();
+  if (!user) return;
+
+  _setSyncStatus('Loading…');
+
+  const { data, error } = await client
+    .from('team_state')
+    .select('*')
+    .eq('user_id', user.id)
+    .single();
+
+  if (error) {
+    _setSyncStatus(error.code === 'PGRST116' ? 'No saved data' : 'Load failed', true);
+    return;
+  }
+
+  setState({
+    members:       data.members,
+    rotationTrack: data.rotation_track,
+    rotationStartA: data.rotation_start_a,
+    rotationStartB: data.rotation_start_b,
+    overrides:     data.overrides || {},
+  });
+  renderAll();
+  _setSyncStatus('Loaded ✓');
+}
+
+function _setSyncStatus(msg, isError = false) {
+  const el = document.getElementById('syncStatus');
+  if (!el) return;
+  el.textContent  = msg;
+  el.style.color  = isError ? 'var(--danger)' : '#10b981';
+  el.style.opacity = '1';
+  clearTimeout(el._timeout);
+  el._timeout = setTimeout(() => { el.style.opacity = '0'; }, 3000);
+}
+
 document.addEventListener('DOMContentLoaded', initAuth);

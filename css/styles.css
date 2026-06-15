@@ -1777,6 +1777,14 @@ textarea {
   font-size: 12px;
 }
 
+/* ─── Sync Status ────────────────────────────────────────────── */
+.sync-status {
+  font-size: 13px;
+  font-weight: 500;
+  transition: opacity 0.4s ease;
+  opacity: 0;
+}
+
 .about-meta {
   display: flex;
   align-items: center;

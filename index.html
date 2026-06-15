@@ -127,9 +127,18 @@
     <section class="view" id="view-team">
       <div class="view-header">
         <h1>Team</h1>
-        <button class="btn btn-primary" id="addMemberBtn">
-          <span class="btn-icon-left">+</span> Add Member
-        </button>
+        <div class="view-actions">
+          <span class="sync-status" id="syncStatus"></span>
+          <button class="btn btn-outline" onclick="loadTeamState()">
+            <span class="btn-icon-left">↓</span> Load
+          </button>
+          <button class="btn btn-outline" onclick="saveTeamState()">
+            <span class="btn-icon-left">↑</span> Save
+          </button>
+          <button class="btn btn-primary" id="addMemberBtn">
+            <span class="btn-icon-left">+</span> Add Member
+          </button>
+        </div>
       </div>
 
       <div class="team-grid">
