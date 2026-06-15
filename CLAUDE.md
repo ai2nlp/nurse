@@ -13,14 +13,14 @@
 ## Project Overview
 * **Project name:** NurseShift
 * **What it does:** Sunday shift rotation manager for a 15-member nursing team with Group A/B, calendar view, and cloud sync
-* **Tech stack:** Plain HTML / CSS / JavaScript, Supabase (auth + PostgreSQL), Cloudflare Pages
+* **Tech stack:** Plain HTML / CSS / JavaScript, Supabase (auth + PostgreSQL), EmailJS (email delivery), Cloudflare Pages
 * **Main language:** JavaScript
 
 ## Project Structure
 * `index.html` — single-page app shell
 * `css/` — stylesheet
 * `js/` — all application logic
-  * `config.js` — Supabase credentials (git-ignored, never commit real values)
+  * `config.js` — Supabase + EmailJS credentials (git-ignored, never commit real values)
   * `state.js` — localStorage state management
   * `auth.js` — Supabase auth + cloud save/load
   * `app.js` — navigation and bootstrap (init() called by auth.js after login)
