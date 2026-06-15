@@ -1,3 +1,52 @@
+// ─── Email Schedule ───────────────────────────────────────────────
+
+async function emailSchedule() {
+  const { data: { user } } = await getSupabaseClient().auth.getUser();
+  if (!user) { alert('Please sign in first.'); return; }
+
+  const btn = document.getElementById('emailScheduleBtn');
+  if (btn) { btn.disabled = true; btn.textContent = 'Sending…'; }
+
+  const sundays = getUpcomingSundays(52);
+  const rows = sundays.map(dateStr => {
+    const assignment = getAssignment(dateStr);
+    const d = parseDate(dateStr);
+    const label = d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
+    const memberA = assignment.A ? (getMemberById(assignment.A)?.name || '—') : '—';
+    const memberB = assignment.B ? (getMemberById(assignment.B)?.name || '—') : '—';
+    return `<tr>
+      <td style="padding:5px 10px;border:1px solid #ddd;white-space:nowrap;color:#444">${label}</td>
+      <td style="padding:5px 10px;border:1px solid #ddd;color:#4338ca;font-weight:600">${memberA}</td>
+      <td style="padding:5px 10px;border:1px solid #ddd;color:#065f46;font-weight:600">${memberB}</td>
+    </tr>`;
+  }).join('');
+
+  const scheduleHtml = `
+    <table style="width:100%;border-collapse:collapse;font-family:Arial,sans-serif;font-size:13px">
+      <thead>
+        <tr style="background:#f0f0f0">
+          <th style="padding:8px 10px;border:1px solid #ddd;text-align:left">Date</th>
+          <th style="padding:8px 10px;border:1px solid #ddd;text-align:left;color:#4338ca">Group A</th>
+          <th style="padding:8px 10px;border:1px solid #ddd;text-align:left;color:#065f46">Group B</th>
+        </tr>
+      </thead>
+      <tbody>${rows}</tbody>
+    </table>`;
+
+  try {
+    await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+      to_email:      user.email,
+      schedule_html: scheduleHtml,
+    });
+    alert(`Schedule sent to ${user.email}`);
+  } catch (err) {
+    console.error('EmailJS error:', err);
+    alert('Failed to send. Please try again.');
+  } finally {
+    if (btn) { btn.disabled = false; btn.textContent = '✉ Email'; }
+  }
+}
+
 // ─── CSV Export ───────────────────────────────────────────────────
 
 /**

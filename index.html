@@ -66,8 +66,11 @@
           <button class="btn btn-outline" onclick="exportCSV()">
             <span class="btn-icon-left">↓</span> Export CSV
           </button>
-          <button class="btn btn-primary" onclick="exportPDF()">
+          <button class="btn btn-outline" onclick="exportPDF()">
             <span class="btn-icon-left">⎙</span> Export PDF
+          </button>
+          <button class="btn btn-primary" id="emailScheduleBtn" onclick="emailSchedule()">
+            <span class="btn-icon-left">✉</span> Email
           </button>
         </div>
       </div>
@@ -337,6 +340,7 @@
        SCRIPTS (order matters)
   ════════════════════════════════════════════ -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <script src="js/config.js"></script>
   <script src="js/state.js"></script>
   <script src="js/rotation.js"></script>

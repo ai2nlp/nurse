@@ -11,6 +11,7 @@ function getSupabaseClient() {
 }
 
 async function initAuth() {
+  emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
   const client = getSupabaseClient();
 
   const { data: { session } } = await client.auth.getSession();
