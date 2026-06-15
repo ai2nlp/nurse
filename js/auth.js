@@ -37,6 +37,7 @@ function _applyAuthState(user) {
     if (!window._nurseBooted) {
       window._nurseBooted = true;
       init();
+      loadTeamState();
     }
   } else {
     overlay?.classList.add('active');
@@ -136,16 +137,28 @@ async function loadTeamState() {
     .single();
 
   if (error) {
-    _setSyncStatus(error.code === 'PGRST116' ? 'No saved data' : 'Load failed', true);
+    if (error.code === 'PGRST116') {
+      // No cloud record yet. If the user has saved locally, push it up to bootstrap the cloud.
+      if (localStorage.getItem('nurseshift_saved_at')) {
+        await saveTeamState();
+        _setSyncStatus('Synced ✓');
+      } else {
+        _setSyncStatus('No saved data');
+      }
+    } else {
+      _setSyncStatus('Load failed', true);
+    }
     return;
   }
 
-  setState({
-    members:       data.members,
-    rotationTrack: data.rotation_track,
+  // Use setStateFromCloud so we don't overwrite nurseshift_saved_at and don't
+  // trigger the auto-save timer — avoids a ping-pong loop on every login.
+  setStateFromCloud({
+    members:        data.members,
+    rotationTrack:  data.rotation_track,
     rotationStartA: data.rotation_start_a,
     rotationStartB: data.rotation_start_b,
-    overrides:     data.overrides || {},
+    overrides:      data.overrides || {},
   });
   renderAll();
   _setSyncStatus('Loaded ✓');

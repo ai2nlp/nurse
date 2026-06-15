@@ -27,6 +27,7 @@ const DEFAULT_STATE = {
 };
 
 let _state = null;
+let _autoSaveTimer = null;
 
 // ─── State Lifecycle ──────────────────────────────────────────────
 function loadState() {
@@ -69,6 +70,21 @@ function getState() {
 function setState(updates) {
   _state = { ..._state, ...updates };
   saveState();
+  clearTimeout(_autoSaveTimer);
+  _autoSaveTimer = setTimeout(() => {
+    if (typeof saveTeamState === 'function') saveTeamState();
+  }, 1500);
+}
+
+// Load cloud data without touching nurseshift_saved_at or triggering auto-save.
+// Used by auth.js after fetching from Supabase so we don't cause a ping-pong loop.
+function setStateFromCloud(updates) {
+  _state = { ..._state, ...updates };
+  try {
+    localStorage.setItem('nurseshift_state', JSON.stringify(_state));
+  } catch (e) {
+    console.warn('NurseShift: Failed to persist cloud state to localStorage.', e);
+  }
 }
 
 function clearAllData() {
