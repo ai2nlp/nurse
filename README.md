@@ -13,7 +13,7 @@ Sunday shift rotation manager for nursing teams. Tracks Group A / Group B assign
 - Team manager — add, edit, reorder (drag & drop), switch groups, delete members
 - Concurrent or alternating rotation modes
 - Manual shift overrides per date
-- Cloud save / load via Supabase (per authenticated user)
+- Automatic cloud sync via Supabase — data loads on login and saves on every change
 - CSV export, PDF print, and email schedule directly to the signed-in user
 - Email authentication (Supabase)
 - Fully responsive, dark glassmorphism UI
